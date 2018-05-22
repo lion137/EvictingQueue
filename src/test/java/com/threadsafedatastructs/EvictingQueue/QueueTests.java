@@ -155,7 +155,6 @@ public class QueueTests {
 
         executorService.shutdown();
         executorService.awaitTermination(40, TimeUnit.SECONDS);
-
         assertEquals(a.tail().toString(), "99");
         assertEquals(a.size(), 100);
     }

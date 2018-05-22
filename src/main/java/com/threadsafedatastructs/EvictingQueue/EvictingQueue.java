@@ -23,11 +23,11 @@ public class EvictingQueue<T> {
         return data.size();
     }
 
-    public T head() {    /* Peek the first element */
+    public synchronized T head() {    /* Peek the first element */
         return this.data.get(0);
     }
 
-    public T tail() {    /* Peek the last element */
+    public synchronized T tail() {    /* Peek the last element */
         return this.data.get(this.data.size() - 1);
     }
 

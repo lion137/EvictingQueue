@@ -7,10 +7,44 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 public class QueueTests {
+
+    private final static int MAX_SIZE = 100;
+
+    @Test
+    public void testConcurrency() throws InterruptedException {
+        final int threadPool = 10;
+        ExecutorService executor = Executors.newFixedThreadPool(threadPool);
+        EvictingQueue<Integer> queue = new EvictingQueue<>(MAX_SIZE);
+        final Integer items = MAX_SIZE + 1;
+
+        Runnable runnable = () -> {
+            for (int i = 0; i <= items; i++) {
+                try {
+                    queue.append(i);
+                } catch (Exception e) {
+                    fail(e.toString());
+                }
+            }
+        };
+
+        for (int i = 0; i < threadPool; i++) {
+            executor.execute(runnable);
+        }
+        executor.shutdown();
+        executor.awaitTermination(10, TimeUnit.SECONDS);
+
+        int size = queue.pollAll().size();
+        System.out.println("Size " + size);
+        assertThat(size).as("wrong size").isEqualTo(MAX_SIZE);
+    }
+
 
     @Test
     public void testEmptyObject() {

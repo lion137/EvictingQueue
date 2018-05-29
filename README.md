@@ -1,1 +1,1 @@
-# EvictingQueue in Java, implemented as a Linkde List.
+# EvictingQueue in Java, implemented as a Linked List.

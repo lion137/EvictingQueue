@@ -49,8 +49,6 @@ public class EvictingQueue<T> {
         if (this.data.size() <= maxSize) {
             if (this.data.size() == maxSize) {
                 this.popFirst();
-                //this.data.add(0, item);
-                //return true;
             }
             this.data.add(0, item);
             return true;
